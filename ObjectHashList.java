@@ -10,6 +10,7 @@ public class ObjectHashList<T>
 {
     List<T> valueList;
     Integer valueListSize;
+    List<T> valueListCopied = null;
 
     // 일단은 중첩도 가능하게끔
     public ObjectHashList(List<T> valueList)
@@ -58,4 +59,16 @@ public class ObjectHashList<T>
 
         return returner;
     }
+
+    public T getUnduplicatedValue(Object seedObject)
+    {
+        if (valueListCopied == null) valueListCopied = new ArrayList<>(valueList);
+        if (valueListCopied.size() == 0) throw new RuntimeException("Pigeonhole principle Error");
+
+        T tValue = new ObjectHashList<T>(valueListCopied).getValue(1, seedObject);
+        valueListCopied.remove(tValue);
+
+        return tValue;
+    }
 }
+
