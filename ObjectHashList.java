@@ -60,15 +60,27 @@ public class ObjectHashList<T>
         return returner;
     }
 
-    public T getUnduplicatedValue(Object seedObject)
+    private T _getUnduplicatedValue(Object seedObject)
     {
-        if (valueListCopied == null) valueListCopied = new ArrayList<>(valueList);
-        if (valueListCopied.size() == 0) throw new RuntimeException("Pigeonhole principle Error");
-
         T tValue = new ObjectHashList<T>(valueListCopied).getValue(1, seedObject);
         valueListCopied.remove(tValue);
 
         return tValue;
     }
-}
 
+    public T getUnduplicatedValue(Object seedObject)
+    {
+        if (valueListCopied == null) valueListCopied = new ArrayList<>(valueList);
+        if (valueListCopied.size() == 0) throw new RuntimeException("Pigeonhole principle Error");
+
+        return _getUnduplicatedValue(seedObject);
+    }
+
+    public T getUnduplicatedValuePossible(Object seedObject)
+    {
+        if (valueListCopied == null) valueListCopied = new ArrayList<>(valueList);
+        if (valueListCopied.size() == 0) valueListCopied = new ArrayList<>(valueList);
+
+        return _getUnduplicatedValue(seedObject);
+    }
+}
